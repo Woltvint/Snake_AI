@@ -1,5 +1,6 @@
 GameBoard[][] boards = new GameBoard[20][20];
 int gen = 0;
+boolean draw = true;
 
 void setup() 
 {
@@ -11,7 +12,7 @@ void setup()
       boards[x][y] = new GameBoard(40, 40, width/boards.length, height/boards[0].length, x * (width/boards.length), y * (height/boards[0].length));
     }
   }
-  frameRate(60);
+  frameRate(240);
 }
 
 void draw() 
@@ -25,13 +26,15 @@ void draw()
     for (int y = 0; y < boards[0].length; y++) 
     {
       boards[x][y].simSnake();
+      if (draw)
       boards[x][y].drawBoard();
+      
       a = a || boards[x][y].snake.alive;
     }
-  }
+  } //<>//
 
   if (!a) 
-  { //<>//
+  {
     mutateGen();
   }
 }
@@ -53,7 +56,7 @@ void keyPressed()
    break;
    */
   case 'G':
-    print("a");
+    draw = !draw;
     break;
   }
 }
@@ -91,7 +94,7 @@ void mutateGen()
   for (int a = 0; a < ar.length; a++) {
     scoremax += ar[a].score;
   }
-  
+
   println("gen: " +gen);
   println(ar[ar.length-1].snake.parts);
 
@@ -113,11 +116,18 @@ void mutateGen()
             break;
           }
         }
-      } 
-      else
+      } else
       {
+        if (random(0,100) < 50)
+        {
         boards[x][y] = new GameBoard(40, 40, width/boards.length, height/boards[0].length, x * (width/boards.length), y * (height/boards[0].length));
-      }
+        }
+        else
+        {
+          boards[x][y] = new GameBoard(40, 40, width/boards.length, height/boards[0].length, x * (width/boards.length), y * (height/boards[0].length));
+          boards[x][y].net = ar[ar.length-1].net;
+        }
+    }
     }
   }
   gen++;
