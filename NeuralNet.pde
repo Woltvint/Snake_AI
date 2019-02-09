@@ -92,13 +92,17 @@ class Neuron
   float mutationChance = 5;
   float mutationRate = 0.01;
 
-  FloatList w;
+  float[] w;
   float b;
 
   Neuron() 
   {
     b = random(-1, 1);
-    w = new FloatList();
+    w = new float[100];
+    for (int i = 0;i < 100;i++) 
+    {
+      w[i] = random(-1, 1);
+    }
   }
 
   float calcNeuron(float[] input) 
@@ -107,12 +111,7 @@ class Neuron
 
     for (int i = 0; i < input.length; i++) 
     {
-      if (i >= w.size()) 
-      {
-        w.append(random(-1, 1));
-      }
-
-      output += w.get(i) * input[i];
+      output += w[i] * input[i];
     }
 
     return sigmoid(output);
@@ -122,14 +121,26 @@ class Neuron
   {
     Neuron n = this;
 
-    for (int i = 0; i < w.size(); i++)
+    for (int i = 0; i < w.length; i++)
     {
       if (random(0.0, 100.0) < mutationChance)
-        n.w.set(i, w.get(i) + random(-mutationRate, mutationRate));
+      {
+        n.w[i] = w[i] + random(-mutationRate, mutationRate);
+      }
+      else
+      {
+        n.w[i] = w[i];
+      }
     }
 
     if (random(0.0, 100.0) < mutationChance)
+    {
       n.b = b + random(-mutationRate, mutationRate);
+    }
+    else
+    {
+      n.b = b;
+    }
 
     return n;
   }

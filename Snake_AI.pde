@@ -1,4 +1,5 @@
 GameBoard[][] boards = new GameBoard[20][20];
+int gen = 0;
 
 void setup() 
 {
@@ -30,8 +31,8 @@ void draw()
   }
 
   if (!a) 
-  {
-    mutateGen(); //<>//
+  { //<>//
+    mutateGen();
   }
 }
 
@@ -91,6 +92,7 @@ void mutateGen()
     scoremax += ar[a].score;
   }
   
+  println("gen: " +gen);
   println(ar[ar.length-1].snake.parts);
 
   for (int x = 0; x < boards.length; x++) 
@@ -110,23 +112,13 @@ void mutateGen()
             boards[x][y].lastFood = 0;
             break;
           }
-          
-          if (x == 0) 
-      {
-            boards[x][y].net = ar[ar.length-1].net;
-            boards[x][y].score = 0;
-            boards[x][y].snake = new Snake(ar[b].bx/2, ar[b].by/2, 4, ar[b].bx * ar[b].by);
-            boards[x][y].lastFood = 0;
-            break;
-      }
         }
       } 
       else
       {
         boards[x][y] = new GameBoard(40, 40, width/boards.length, height/boards[0].length, x * (width/boards.length), y * (height/boards[0].length));
       }
-      
-      
     }
   }
+  gen++;
 }

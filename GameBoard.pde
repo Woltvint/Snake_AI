@@ -6,7 +6,7 @@ class GameBoard
   int by;
 
   //score
-  int score = 0;
+  float score = 0;
 
   //food
   int foodx;
@@ -32,8 +32,8 @@ class GameBoard
     offx = ox; 
     offy = oy;
 
-    foodx = floor(random(1, bx));
-    foody = floor(random(1, by));
+    foodx = floor(random(1, bx-1));
+    foody = floor(random(1, by-1));
   }
 
 
@@ -74,8 +74,8 @@ class GameBoard
 
     if (snake.partx[0] == foodx && snake.party[0] == foody) 
     {
-      foodx = floor(random(1, bx));
-      foody = floor(random(1, by));
+      foodx = floor(random(1, bx-1));
+      foody = floor(random(1, by-1));
       snake.parts++;
 
       int i;
@@ -89,13 +89,13 @@ class GameBoard
 
       snake.partx[i] = snake.partx[i-1] + (snake.partx[i-1] - snake.partx[i-2]);
       snake.party[i] = snake.party[i-1] + (snake.party[i-1] - snake.party[i-2]);
-      score += 10;
+      score += 50;
       lastFood = 0;
     } else
     {
       lastFood++;
 
-      if (lastFood > 500) 
+      if (lastFood > 300) 
       {
         snake.alive = false;
       }
