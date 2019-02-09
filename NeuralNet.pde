@@ -119,7 +119,7 @@ class Neuron
 
   Neuron mutateNeuron() 
   {
-    Neuron n = this;
+    Neuron n = new Neuron();
 
     for (int i = 0; i < w.length; i++)
     {
