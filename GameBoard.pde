@@ -25,21 +25,23 @@ class GameBoard
     bx = boardx; 
     by = boardy;
     snake = new Snake(boardx/2, boardy/2, 4, boardx * boardy);
-    net = new NeuralNet(3, 2, 2);
+    net = new NeuralNet(3, 3, 3);
 
     w = bw; 
     h = bh; 
     offx = ox; 
     offy = oy;
 
-    foodx = floor(random(1, bx-1));
-    foody = floor(random(1, by-1));
+    foodx = floor(random(2, bx-1));
+    foody = floor(random(2, by-1));
   }
 
 
   void drawBoard() 
   {
     translate(offx, offy);
+    if (snake.alive) 
+    {
     snake.drawSnake((float)w/(float)bx, (float)h/(float)by);
     stroke(0);
     line(0, 0, 0, h);
@@ -47,12 +49,20 @@ class GameBoard
     line(w, 0, w, h);
     line(0, h, w, h);
     rect(foodx*(float)w/(float)bx, foody*(float)h/(float)by, (float)w/(float)bx, (float)h/(float)by);
+    }
+    else
+    {
+      stroke(0);
+      fill(0);
+      rect(0,0,w,h);
+    }
     translate(-offx, -offy);
   }
 
 
   void simSnake() 
   {
+    if (!snake.alive) {return;}
     boolean c = false;
     for (int i = 1; i < snake.partx.length; i++)
     {
@@ -74,8 +84,8 @@ class GameBoard
 
     if (snake.partx[0] == foodx && snake.party[0] == foody) 
     {
-      foodx = floor(random(1, bx-1));
-      foody = floor(random(1, by-1));
+      foodx = floor(random(2, bx-1));
+      foody = floor(random(2, by-1));
       snake.parts++;
 
       int i;

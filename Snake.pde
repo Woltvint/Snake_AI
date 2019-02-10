@@ -91,8 +91,8 @@ class Snake
     {
       if (partx[i] > -1 && party[i] > -1)
       {
-        stroke(0+i%100);
-        fill(0+i%100);
+        stroke((i*16)%180);
+        fill((i*16)%180);
         rect(partx[i]*w, party[i]*h, w, h);
       }
     }
