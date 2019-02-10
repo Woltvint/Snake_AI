@@ -1,6 +1,11 @@
-GameBoard[][] boards = new GameBoard[20][20];
+GameBoard[][] boards = new GameBoard[20][20]; //<>//
+
 int gen = 0;
-boolean draw = true;
+int highScore = 0;
+int highIntScore = 0;
+
+boolean drawSnakes = true;
+boolean showInfo = true;
 
 void setup() 
 {
@@ -26,38 +31,41 @@ void draw()
     for (int y = 0; y < boards[0].length; y++) 
     {
       boards[x][y].simSnake();
-      if (draw)
-      boards[x][y].drawBoard();
-      
+      if (drawSnakes)
+      {
+        boards[x][y].drawBoard();
+      }
       a = a || boards[x][y].snake.alive;
     }
-  } //<>//
+  }
 
   if (!a) 
   {
     mutateGen();
+  }
+
+  if (showInfo) 
+  {
+    stroke(0);
+    fill(255);
+    rect(0, 0, 120, 70);
+    fill(0);
+    text("Gen: " + gen, 10, 20);
+    text("HighScore: : " + highScore, 10, 40);
+    text("IntScore: " + highIntScore, 10, 60);
   }
 }
 
 void keyPressed() 
 {
   switch(keyCode)
-  {/*
- case 'A':
-   boards[0][0].snake.moveSnake(1);
-   break;
-   
-   case 'D':
-   boards[0][0].snake.moveSnake(-1);
-   break;
-   
-   case 'W':
-   boards[0][0].snake.moveSnake(0);
-   break;
-   */
+  {
   case 'G':
-    draw = !draw;
+    drawSnakes = !drawSnakes;
     break;
+  case 'I':
+    showInfo = !showInfo;
+    break;  
   }
 }
 
@@ -95,8 +103,16 @@ void mutateGen()
     scoremax += ar[a].score;
   }
 
-  println("gen: " +gen);
-  println(ar[ar.length-1].snake.parts);
+  //highscore update thing
+  if (highScore < ar[ar.length-1].snake.parts) 
+  {
+    highScore = ar[ar.length-1].snake.parts;
+  }
+  //highintscore update thing
+  if (highIntScore < ar[ar.length-1].score) 
+  {
+    highIntScore = round(ar[ar.length-1].score);
+  }
 
   for (int x = 0; x < boards.length; x++) 
   {
@@ -118,16 +134,15 @@ void mutateGen()
         }
       } else
       {
-        if (random(0,100) < 50)
+        if (random(0, 100) < 10)
         {
-        boards[x][y] = new GameBoard(40, 40, width/boards.length, height/boards[0].length, x * (width/boards.length), y * (height/boards[0].length));
-        }
-        else
+          boards[x][y] = new GameBoard(40, 40, width/boards.length, height/boards[0].length, x * (width/boards.length), y * (height/boards[0].length));
+        } else
         {
           boards[x][y] = new GameBoard(40, 40, width/boards.length, height/boards[0].length, x * (width/boards.length), y * (height/boards[0].length));
           boards[x][y].net = ar[ar.length-1].net;
         }
-    }
+      }
     }
   }
   gen++;
