@@ -25,7 +25,7 @@ class GameBoard
     bx = boardx; 
     by = boardy;
     snake = new Snake(boardx/2, boardy/2, 4, boardx * boardy);
-    net = new NeuralNet(3, 3, 3);
+    net = new NeuralNet(3, 9, 3);
 
     w = bw; 
     h = bh; 
@@ -110,9 +110,11 @@ class GameBoard
         snake.alive = false;
       }
     }
+    
+    
+    
 
-
-    float[] input = new float[6];
+    float[] input = new float[9];
 
     int frontx = snake.partx[0] + round(cos(snake.dir * HALF_PI));
     int fronty = snake.party[0] + -round(sin(snake.dir * HALF_PI));
@@ -122,6 +124,7 @@ class GameBoard
 
     int rightx = snake.partx[0] + round(cos((snake.dir-1) * HALF_PI));
     int righty = snake.party[0] + -round(sin((snake.dir-1) * HALF_PI));
+    
 
     boolean fc = false;
     boolean rc = false;
@@ -143,6 +146,20 @@ class GameBoard
       {
         lc = true;
       }
+    }
+    
+    
+    if (frontx == 0 || frontx == bx || fronty == 0 || fronty == by) 
+    {
+      fc = true;
+    }
+    if (rightx == 0 || rightx == bx || righty == 0 || righty == by) 
+    {
+      rc = true;
+    }
+    if (leftx == 0 || leftx == bx || lefty == 0 || lefty == by) 
+    {
+      lc = true;
     }
 
     if (fc) { 
@@ -180,6 +197,47 @@ class GameBoard
         input[5] = 1;
       }
     }
+    
+    int fx = frontx - snake.partx[0];
+    int fy = fronty - snake.party[0];
+    int rx = rightx - snake.partx[0];
+    int ry = righty - snake.party[0];
+    int lx = leftx - snake.partx[0];
+    int ly = lefty - snake.party[0];
+    
+    int x = snake.partx[0];
+    int y = snake.party[0];
+    int i = 0;
+    while(!(x == 0 || y == 0 || x == bx || y == by)) 
+    {
+      x += fx;
+      y += fy;
+      i++;
+    }
+    input[6] = (float)i/(float)40;
+    
+    x = snake.partx[0];
+    y = snake.party[0];
+    i = 0;
+    while(!(x == 0 || y == 0 || x == bx || y == by)) 
+    {
+      x += rx;
+      y += ry;
+      i++;
+    }
+    input[7] = (float)i/(float)40;
+    
+    x = snake.partx[0];
+    y = snake.party[0];
+    i = 0;
+    while(!(x == 0 || y == 0 || x == bx || y == by)) 
+    {
+      x += lx;
+      y += ly;
+      i++;
+    }
+    input[8] = (float)i/(float)40;
+    
 
     float[] control;
 

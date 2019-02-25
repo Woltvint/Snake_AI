@@ -9,7 +9,7 @@ boolean showInfo = true;
 
 void setup() 
 {
-  size(900, 900);
+  size(1000, 1000);
   for (int x = 0; x < boards.length; x++) 
   {
     for (int y = 0; y < boards[0].length; y++) 
